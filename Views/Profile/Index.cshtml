@@ -1,0 +1,22 @@
+@model MemberDemo.Web.Models.MemberProfile
+<h2>我的資料</h2>
+<form asp-action="Index" method="post" enctype="multipart/form-data">
+  <div>
+    <label>暱稱</label>
+    <input asp-for="NickName" />
+  </div>
+  <div>
+    <label>生日</label>
+    <input asp-for="BirthDate" type="date" />
+  </div>
+  <div>
+    <label>地址</label>
+    <input asp-for="Address" />
+  </div>
+  <div>
+    <label>頭像</label>
+    <input type="file" name="avatar" />
+    @if(!string.IsNullOrEmpty(Model.AvatarPath)){ <img src="@Model.AvatarPath" width="80" /> }
+  </div>
+  <button type="submit">儲存</button>
+</form>
