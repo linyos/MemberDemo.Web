@@ -1,22 +1,90 @@
 @model MemberDemo.Web.Models.MemberProfile
+
 <h2>我的資料</h2>
-<form asp-action="Index" method="post" enctype="multipart/form-data">
-  <div>
-    <label>暱稱</label>
-    <input asp-for="NickName" />
+
+@* 顯示成功或錯誤訊息 *@
+@if (TempData["SuccessMessage"] != null)
+{
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    @TempData["SuccessMessage"]
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
-  <div>
-    <label>生日</label>
-    <input asp-for="BirthDate" type="date" />
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    @TempData["ErrorMessage"]
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
-  <div>
-    <label>地址</label>
-    <input asp-for="Address" />
+}
+
+@if (TempData["ModelStateErrors"] != null)
+{
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>驗證錯誤：</strong> @TempData["ModelStateErrors"]
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
-  <div>
-    <label>頭像</label>
-    <input type="file" name="avatar" />
-    @if(!string.IsNullOrEmpty(Model.AvatarPath)){ <img src="@Model.AvatarPath" width="80" /> }
+}
+
+<form asp-action="Index" method="post" enctype="multipart/form-data" class="row g-3">
+  <!-- 加入這行隱藏欄位 -->
+  <input asp-for="UserId" type="hidden" />
+
+  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+  <div class="col-md-6">
+    <label asp-for="NickName" class="form-label">暱稱</label>
+    <input asp-for="NickName" class="form-control" />
+    <span asp-validation-for="NickName" class="text-danger"></span>
   </div>
-  <button type="submit">儲存</button>
+
+  <div class="col-md-6">
+    <label asp-for="BirthDate" class="form-label">生日</label>
+    <input asp-for="BirthDate" type="date" class="form-control" />
+    <span asp-validation-for="BirthDate" class="text-danger"></span>
+  </div>
+
+  <div class="col-12">
+    <label asp-for="Address" class="form-label">地址</label>
+    <input asp-for="Address" class="form-control" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+  </div>
+
+  <div class="col-12">
+    <label for="avatar" class="form-label">頭像</label>
+    <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*" />
+    <div class="form-text">支援 JPG、PNG、GIF 格式，檔案大小不超過 5MB</div>
+    @if (!string.IsNullOrEmpty(Model.AvatarPath))
+    {
+      <div class="mt-2">
+        <img src="@Model.AvatarPath" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" alt="目前頭像" />
+      </div>
+    }
+  </div>
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-save"></i> 儲存
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">取消</a>
+  </div>
 </form>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+
+  @* <script>
+    // 預覽頭像功能
+    document.getElementById('avatar').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          // 可以加入圖片預覽功能
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script> *@
+}

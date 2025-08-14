@@ -23,6 +23,8 @@ namespace MemberDemo.Web.Data
                 }
             }
 
+            
+
             // 建立管理員使用者
             var admin = await userMgr.FindByEmailAsync("admin@demo.local");
             if (admin == null)
