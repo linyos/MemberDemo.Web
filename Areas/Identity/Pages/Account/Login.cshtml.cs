@@ -29,6 +29,10 @@ namespace MemberDemo.Web.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
+
+        public String TestName { get; set; } = "測試名稱";
+
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -98,24 +102,39 @@ namespace MemberDemo.Web.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            _logger.LogInformation($"紀錄使用者登入嘗試。");
             ReturnUrl = returnUrl;
         }
 
+
+        /// <summary>
+        /// 處理 POST 請求
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            
+            // 
             returnUrl ??= Url.Content("~/");
 
+
+            // 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
+                // 紀錄使用者登入嘗試
+                _logger.LogInformation($"紀錄使用者登入嘗試。 {Input.Email} , {Input.Password}");
+
+                // 嘗試登入
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("使用者登入成功。");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

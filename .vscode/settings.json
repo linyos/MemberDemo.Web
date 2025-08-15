@@ -1,18 +1,26 @@
 {
-  "editor.formatOnSave": true,
-  "github.copilot.chat.enable": true,
-  "github.copilot.chat.completions.enable": true,
+  "csharp.experimental.debug.hotReload": true,
+  "csharp.debug.hotReloadOnSave": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "editor.inlineSuggest.edits.showCollapsed": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "text": "Always response in #zh-tw."
+      "text": "請一律使用正體中文來撰寫記錄'"
+    },
+    {
+      "file": ".copilot-instructions.md"
     }
   ],
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "file": ".copilot-commit-message-instructions.md"
+      "text": "# Use Conventional Commits 1.0.0 for commit messages."
     },
     {
-      "text": "Always response in #zh-tw. "
+      "text": "請一律使用正體中文來撰寫記錄，以確保一致性和可讀性"
+    },
+    {
+      "file": ".copilot-commit-message.instructions.md"
     }
-  ]
+  ],
 }
